@@ -1,0 +1,13 @@
+*.egg-info
+*.pyc
+*.whl
+*.sdist
+*.sh
+.vscode/
+__pycache__/
+venv/
+build/
+dist/
+
+data/
+checkpoints/

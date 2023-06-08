@@ -1,0 +1,11 @@
+root_folder: ./
+epochs: 70
+stages:
+- 49
+- 64
+batch_size: 128
+num_workers: 8
+start: 20
+increment: 20
+criterion_weight_base: 5
+rehearsal: 20
