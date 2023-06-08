@@ -1,6 +1,6 @@
 # CL<sup>2</sup>R: Compatible Lifelong Learning Representations
 
-This repo contains the code of "CL<sup>2</sup>R: Compatible Lifelong Learning Representations", _Niccolò Biondi, Federico Pernici, Matteo Bruni, Daniele Mugnai, and Alberto Del Bimbo, ACM Transactions on Multimedia Computing, Communications, and Applications 
+This repo contains the code of "CL<sup>2</sup>R: Compatible Lifelong Learning Representations", _Niccolò Biondi, Federico Pernici, Matteo Bruni, Daniele Mugnai, and Alberto Del Bimbo_, ACM Transactions on Multimedia Computing, Communications, and Applications 
 
 Open access version on [arxiv](https://arxiv.org/abs/2211.09032)
 
