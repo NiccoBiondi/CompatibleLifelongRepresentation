@@ -1,4 +1,4 @@
-torch==1.13.0
-torchvision==0.14.0
-continuum==1.2.7
-scikit-learn==1.1.1
+torch
+torchvision
+continuum
+scikit-learn

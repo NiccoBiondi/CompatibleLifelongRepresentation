@@ -13,7 +13,7 @@ def evaluate(args, query_loader, gallery_loader):
     targets = query_loader.dataset.targets
 
     for task_id in range(args.nb_tasks):
-        ckpt_path = osp.join(*(args.root_folder, "checkpoints", f"ckpt_{task_id}.pt")) 
+        ckpt_path = osp.join(*(args.checkpoint_path, f"ckpt_{task_id}.pt")) 
         net = ResNet32Cifar(resume_path=ckpt_path, 
                                          starting_classes=100, 
                                          feat_size=99, 
@@ -22,7 +22,7 @@ def evaluate(args, query_loader, gallery_loader):
         query_feat = extract_features(args, net, query_loader)
 
         for i in range(task_id+1):
-            ckpt_path = osp.join(*(args.root_folder, "checkpoints", f"ckpt_{i}.pt")) 
+            ckpt_path = osp.join(*(args.checkpoint_path, f"ckpt_{i}.pt")) 
             previous_net = ResNet32Cifar(resume_path=ckpt_path, 
                                          starting_classes=100, 
                                          feat_size=99, 
@@ -39,8 +39,6 @@ def evaluate(args, query_loader, gallery_loader):
                 acc_str = f'Self-test of model at task {i+1}:'
             print(f'{acc_str} {acc*100:.2f}')
 
-    print(f"Compatibility Matrix:\n{compatibility_matrix}")
-
     # compatibility metrics
     ac = average_compatibility(matrix=compatibility_matrix)
     bc = backward_compatibility(matrix=compatibility_matrix)
@@ -50,15 +48,13 @@ def evaluate(args, query_loader, gallery_loader):
     print(f"Backw. Comp. {bc:.3f}")
     print(f"Forw. Comp. {fc:.3f}")
 
+    print(f"Compatibility Matrix:\n{compatibility_matrix}")
+    np.save(osp.join(f"./{args.checkpoint_path}/compatibility_matrix.npy"), compatibility_matrix)
+
 
 def validation(args, net, query_loader, gallery_loader, task_id, selftest=False):
     targets = query_loader.dataset.targets
 
-    # ckpt_path = osp.join(*(args.root_folder, "checkpoints", f"ckpt_{task_id}.pt")) 
-    # net = ResNet32Cifar(resume_path=ckpt_path, 
-    #                                     starting_classes=100, 
-    #                                     feat_size=99, 
-    #                                     device=args.device)
     net.eval() 
     query_feat = extract_features(args, net, query_loader)
 
@@ -77,7 +73,7 @@ def validation(args, net, query_loader, gallery_loader, task_id, selftest=False)
     return acc
 
 
-"""Copy from [insightface](https://github.com/deepinsight/insightface)"""
+"""From [insightface](https://github.com/deepinsight/insightface)"""
 def verification(query_feature, gallery_feature, targets):
     thresholds = np.arange(0, 4, 0.001)
     tpr, fpr, accuracy, best_thresholds = calculate_roc(thresholds, query_feature, gallery_feature, targets)

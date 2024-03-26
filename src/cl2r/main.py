@@ -20,6 +20,7 @@ from cl2r.utils import create_pairs, update_criterion_weight, BalancedBatchSampl
 from cl2r.model import ResNet32Cifar
 from cl2r.train import train, classification
 from cl2r.eval import validation, evaluate
+from datetime import datetime
 
 
 def main():
@@ -44,8 +45,10 @@ def main():
     data_path = osp.join(args.root_folder, "data")
     if not osp.exists(data_path):
         os.makedirs(data_path)
-    if not osp.exists(osp.join(args.root_folder, "checkpoints")):
-        os.makedirs(osp.join(args.root_folder, "checkpoints"))
+    time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    if not osp.exists(osp.join(args.root_folder, f"checkpoints-{time}")):
+        os.makedirs(osp.join(args.root_folder, f"checkpoints-{time}"))
+    args.checkpoint_path = osp.join(args.root_folder, f"checkpoints-{time}")
         
     print(f"Loading Training Dataset")
     train_transform = [transforms.RandomCrop(32, padding=4),
@@ -143,10 +146,10 @@ def main():
             acc_val = classification(args, net, val_loader, criterion_cls)
             scheduler_lr.step()
             
-            if acc_val > best_acc:
+            if (acc_val > best_acc and args.save_best) or (not args.save_best and epoch == args.epochs - 1):
                 best_acc = acc_val
                 print("Saving model")
-                ckpt_path = osp.join(*(args.root_folder, "checkpoints", f"ckpt_{task_id}.pt"))
+                ckpt_path = osp.join(*(args.checkpoint_path, f"ckpt_{task_id}.pt"))
                 torch.save(net.state_dict(), ckpt_path)
         
         memory.add(*scenario_train[task_id].get_raw_samples(), z=None)  

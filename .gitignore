@@ -10,4 +10,5 @@ build/
 dist/
 
 data/
-checkpoints/
+checkpoints*/
+test*

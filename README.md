@@ -14,11 +14,14 @@ In this paper, we propose a method to partially mimic natural intelligence for t
 ```sh
 git clone https://github.com/NiccoBiondi/CompatibleLifelongRepresentation.git
 cd CompatibleLifelongRepresentation
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-pip install -e .
+pip install .
 
 # run experiment
 cl2r --config_path config.yml
+cl2r --config_path config_10task.yml
 ```
 
 To modify hyperparameters please modify the [config](config.yml) file.

@@ -18,6 +18,8 @@ class ExperimentParams():
     criterion_weight_base: float = 10
     rehearsal: int = 20
 
+    save_best: bool = False
+
 def save_default_yaml(path):
     # -*- coding: utf-8 -*-
     import yaml
